@@ -1,0 +1,126 @@
+{
+  "name": "acrobatdesk",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx server.ts",
+    "start": "node server.ts --prod",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf dist release server.js",
+    "lint": "tsc --noEmit",
+    "postinstall": "node scripts/copy-runtime-assets.mjs",
+    "prebuild": "node scripts/copy-runtime-assets.mjs",
+    "predev": "node scripts/copy-runtime-assets.mjs",
+    "desktop": "npm run build && node scripts/run-electron.mjs",
+    "desktop:dev": "node scripts/run-electron.mjs",
+    "dist:mac": "node scripts/build-desktop.mjs mac",
+    "dist:mac:signed": "node scripts/build-desktop.mjs mac --signed",
+    "dist:win": "node scripts/build-desktop.mjs win"
+  },
+  "dependencies": {
+    "@fontsource/caveat": "^5.2.8",
+    "@fontsource/dancing-script": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/plus-jakarta-sans": "^5.2.8",
+    "@pdf-lib/fontkit": "^1.1.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@tesseract.js-data/eng": "^1.0.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "docx": "^9.15.2",
+    "express": "^4.21.2",
+    "lucide-react": "^0.546.0",
+    "mammoth": "^1.13.0",
+    "motion": "^12.23.24",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.5.438",
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1",
+    "tesseract.js": "^7.0.0",
+    "vite": "^8.3.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.4.21",
+    "electron": "^45.0.0",
+    "electron-builder": "^26.18.0",
+    "esbuild": "^0.28.0",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.21.0",
+    "typescript": "^7.0.2"
+  },
+  "description": "AcrobatDesk \u2014 offline PDF editor: edit text and images, sign, comment, organise pages and OCR.",
+  "author": "AcrobatDesk",
+  "main": "electron/main.cjs",
+  "build": {
+    "appId": "com.acrobatdesk.app",
+    "productName": "AcrobatDesk",
+    "copyright": "Copyright \u00a9 2026 AcrobatDesk",
+    "directories": {
+      "output": "release",
+      "buildResources": "electron/resources"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "!electron/resources/**/*",
+      "package.json",
+      "!node_modules/**/*"
+    ],
+    "asar": true,
+    "fileAssociations": [
+      {
+        "ext": "pdf",
+        "name": "PDF Document",
+        "description": "PDF Document",
+        "mimeType": "application/pdf",
+        "role": "Editor",
+        "rank": "Alternate"
+      }
+    ],
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "category": "public.app-category.productivity",
+      "icon": "icon.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "artifactName": "AcrobatDesk-${version}-mac-${arch}.${ext}"
+    },
+    "dmg": {
+      "title": "AcrobatDesk ${version}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "icon.png",
+      "artifactName": "AcrobatDesk-${version}-windows-${arch}-setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AcrobatDesk"
+    }
+  }
+}
